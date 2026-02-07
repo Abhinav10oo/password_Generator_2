@@ -1,0 +1,22 @@
+# Create .gitignore file
+cat > .gitignore << 'EOF'
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# Backend
+Backend/__pycache__/
+Backend/*.pyc
+Backend/.env
+Backend/venv/
+Backend/env/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+EOF
