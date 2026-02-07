@@ -1,7 +1,9 @@
 import { useState } from "react";
+import Navbar from "./component/Navbar/Navbar";
+import About from "./component/About/About";
 import "./App.css";
 
-function App() {
+function PasswordGenerator() {
   const [password, setPassword] = useState("");
   const [useUpper, setUseUpper] = useState(true);
   const [useLower, setUseLower] = useState(true);
@@ -186,6 +188,17 @@ function App() {
         </button>
       </div>
     </div>
+  );
+}
+
+function App() {
+  const [currentPage, setCurrentPage] = useState('home');
+
+  return (
+    <>
+      <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      {currentPage === 'home' ? <PasswordGenerator /> : <About />}
+    </>
   );
 }
 
