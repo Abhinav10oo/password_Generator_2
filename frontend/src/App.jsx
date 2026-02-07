@@ -11,25 +11,46 @@ function App() {
   const [length, setLength] = useState(16);
   const [copied, setCopied] = useState(false);
 
-  const generatePassword = async () => {
-    console.log("Button clicked");
-    const response = await fetch("http://localhost:5000/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        useUpper,
-        useLower,
-        useNumbers,
-        useSpecial,
-        customWord,
-        length,
-      }),
-    });
+  const generatePassword = () => {
+    let pool = "";
 
-    const data = await response.json();
-    setPassword(data.password);
+    if (useUpper) pool += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    if (useLower) pool += "abcdefghijklmnopqrstuvwxyz";
+    if (useNumbers) pool += "0123456789";
+    if (useSpecial) pool += "!@#$%^&*()-+";
+
+    if (!pool) {
+      setPassword("");
+      return;
+    }
+
+    // Randomize case of custom word
+    let word = "";
+    for (let char of customWord) {
+      word += Math.random() > 0.5 ? char.toUpperCase() : char.toLowerCase();
+    }
+
+    if (word.length > length) {
+      setPassword("");
+      return;
+    }
+
+    const remaining = length - word.length;
+
+    // Generate random characters
+    let randomPart = "";
+    for (let i = 0; i < remaining; i++) {
+      randomPart += pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    // Combine and shuffle
+    const combined = word + randomPart;
+    const shuffled = combined
+      .split("")
+      .sort(() => Math.random() - 0.5)
+      .join("");
+
+    setPassword(shuffled);
     setCopied(false);
   };
 
